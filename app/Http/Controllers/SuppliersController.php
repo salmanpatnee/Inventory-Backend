@@ -20,8 +20,14 @@ class SuppliersController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'name');
 
-        return SuppliersResource::collection(Supplier::search($term)->paginate($paginate));
+        $suppliers = Supplier::search($term)
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return SuppliersResource::collection($suppliers);
     }
 
     /**
@@ -37,11 +43,11 @@ class SuppliersController extends Controller
         $supplier =  Supplier::create($attributes);
 
         return (new SuppliersResource($supplier))
-        ->additional([
-            'message' => 'Supplier added successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_CREATED);
+            ->additional([
+                'message' => 'Supplier added successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -69,11 +75,11 @@ class SuppliersController extends Controller
         $supplier->update($attributes);
 
         return (new SuppliersResource($supplier))
-        ->additional([
-            'message' => 'Supplier updated successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_OK);
+            ->additional([
+                'message' => 'Supplier updated successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**

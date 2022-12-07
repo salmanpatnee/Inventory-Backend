@@ -20,8 +20,14 @@ class EmployeesController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
-        
-        return EmployeeResource::collection(Employee::search($term)->paginate($paginate));
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'name');
+
+        $employees = Employee::search($term)
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return EmployeeResource::collection($employees);
     }
 
     /**
@@ -37,11 +43,11 @@ class EmployeesController extends Controller
         $employee =  Employee::create($attributes);
 
         return (new EmployeeResource($employee))
-        ->additional([
-            'message' => 'Employee added successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_CREATED);
+            ->additional([
+                'message' => 'Employee added successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -69,11 +75,11 @@ class EmployeesController extends Controller
         $employee->update($attributes);
 
         return (new EmployeeResource($employee))
-        ->additional([
-            'message' => 'Employee updated successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_OK);
+            ->additional([
+                'message' => 'Employee updated successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -85,16 +91,16 @@ class EmployeesController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
-        
+
         return response([
             'message' => 'Employee deleted successfully.',
             'status'  => 'success'
         ], Response::HTTP_OK);
     }
 
-    public function export() 
-    {   
-        $employees = [1,2,3];
+    public function export()
+    {
+        $employees = [1, 2, 3];
 
         return (new EmployeesExport($employees));
     }

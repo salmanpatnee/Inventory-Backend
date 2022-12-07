@@ -20,8 +20,15 @@ class ProductsController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'name');
 
-        return ProductResource::collection(Product::search($term)->with(['supplier', 'category'])->paginate($paginate));
+        $products = Product::search($term)
+            ->with(['supplier', 'category'])
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return ProductResource::collection($products);
     }
 
     /**

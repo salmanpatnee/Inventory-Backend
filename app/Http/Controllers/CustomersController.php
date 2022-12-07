@@ -19,8 +19,14 @@ class CustomersController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'name');
 
-        return CustomerResource::collection(Customer::search($term)->paginate($paginate));
+        $customers = Customer::search($term)
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return CustomerResource::collection($customers);
     }
 
     /**

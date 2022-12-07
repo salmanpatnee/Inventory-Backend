@@ -32,15 +32,18 @@ class SalariesController extends Controller
         $term     = request('search', '');
         $month    = request('month');
         $year     = request('year', date('Y'));
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'paid_date');
 
         if (!$month) return [];
 
-        return SalaryResource::collection(
-            Salary::search($term)->where('month', $month)
-                ->where('year', $year)
-                ->with('employee')
-                ->paginate($paginate)
-        );
+        $salaries =  Salary::search($term)->where('month', $month)
+            ->where('year', $year)
+            ->with('employee')
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return SalaryResource::collection($salaries);
     }
 
     /**

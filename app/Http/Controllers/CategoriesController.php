@@ -20,8 +20,14 @@ class CategoriesController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'name');
 
-        return CategoryResource::collection(Category::search($term)->paginate($paginate));
+        $categories = Category::search($term)
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return CategoryResource::collection($categories);
     }
 
     /**
@@ -37,11 +43,11 @@ class CategoriesController extends Controller
         $category =  Category::create($attributes);
 
         return (new CategoryResource($category))
-        ->additional([
-            'message' => 'Category added successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_CREATED);
+            ->additional([
+                'message' => 'Category added successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -69,11 +75,11 @@ class CategoriesController extends Controller
         $category->update($attributes);
 
         return (new CategoryResource($category))
-        ->additional([
-            'message' => 'Category updated successfully.',
-            'status' => 'success'
-        ])->response()
-        ->setStatusCode(Response::HTTP_OK);
+            ->additional([
+                'message' => 'Category updated successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -82,7 +88,7 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy( Category $category)
+    public function destroy(Category $category)
     {
         $category->delete();
 

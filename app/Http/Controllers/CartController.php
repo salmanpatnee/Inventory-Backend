@@ -43,7 +43,7 @@ class CartController extends Controller
             $isProductInCart->update(['sub_total' => $sub_total]);
            
             return response([
-                'message' => 'Item already exists.',
+                'message' => 'Quantity updated',
                 'status'  => 'success'
             ], Response::HTTP_OK);
         } else {

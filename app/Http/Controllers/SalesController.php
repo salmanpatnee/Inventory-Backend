@@ -23,8 +23,15 @@ class SalesController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'created_at');
 
-        return SaleResource::collection(Sale::search($term)->with('customer')->paginate($paginate));
+        $sales = Sale::search($term)
+            ->with('customer')
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return SaleResource::collection($sales);
     }
 
     /**

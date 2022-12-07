@@ -20,8 +20,14 @@ class ExpensesController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $sortOrder  = request('sortOrder', 'desc');
+        $orderBy    = request('orderBy', 'created_at');
 
-        return ExpenseResource::collection(Expense::search($term)->paginate($paginate));
+        $expenses = Expense::search($term)
+            ->orderBy($orderBy, $sortOrder)
+            ->paginate($paginate);
+
+        return ExpenseResource::collection($expenses);
     }
 
     /**
