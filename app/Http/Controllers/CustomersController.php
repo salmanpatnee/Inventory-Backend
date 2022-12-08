@@ -17,7 +17,7 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $paginate = request('paginate', 10);
+        $paginate = request('paginate', 20);
         $term     = request('search', '');
         $sortOrder  = request('sortOrder', 'desc');
         $orderBy    = request('orderBy', 'name');

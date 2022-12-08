@@ -45,9 +45,14 @@ class SalesController extends Controller
 
         $attributes = $request->validated();
 
-        $sale =  Sale::create($attributes);
+        $sale = Sale::create($attributes);
 
-        // Inset sale details
+        $sale->customer()->update([
+            'total_spendings' => $sale->customer->total_spendings + $sale->pay, 
+            'last_purchase_at' => $sale->created_at
+        ]);
+
+        // Insert sale details
         if ($sale) {
             $saleDetails = Cart::all();
 
