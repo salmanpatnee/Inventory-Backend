@@ -20,8 +20,15 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password', 
+        'phone', 
+        'address', 
+        'salary', 
+        'joining_date', 
+        'last_login_at', 
+        'active'
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -32,14 +39,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime', 
+        'active' => 'boolean'
     ];
 
     /**
@@ -48,5 +56,22 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term)
+            ->orWhere('email', 'like', $term)
+            ->orWhere('phone', 'like', $term)
+            ->orWhere('address', 'like', $term);
+        });
+    }
+
+    public function salaries()
+    {
+        return $this->hasMany(Salary::class);
     }
 }

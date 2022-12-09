@@ -12,6 +12,7 @@ use App\Http\Controllers\SalariesController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('employees/export/', [EmployeesController::class, 'export']);
 
 Route::get('dashboard', DashboardController::class);
+Route::resource('users', UsersController::class);
+
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
