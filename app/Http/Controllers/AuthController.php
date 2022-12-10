@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if (!$user->status) {
+        if (!$user->active) {
 
             Auth::logout();
 

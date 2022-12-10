@@ -16,19 +16,21 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id, 
-            'category_id' => $this->category_id, 
-            'supplier_id' => $this->supplier_id, 
-            'supplier' => new SuppliersResource($this->whenLoaded('supplier')), 
-            'category' => new CategoryResource($this->whenLoaded('category')), 
-            'name' => $this->name, 
-            'code' => $this->code, 
-            'root' => $this->whenNotNull($this->root), 
-            'cost' => $this->whenNotNull($this->cost, 0), 
-            'price' => $this->whenNotNull($this->price, 0), 
-            'quantity' => $this->quantity ? $this->quantity : 0, 
+            'id' => $this->id,
+            'category_id' => $this->category_id,
+            'supplier_id' => $this->supplier_id,
+            'supplier' => new SuppliersResource($this->whenLoaded('supplier')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'name' => $this->name,
+            'code' => $this->code,
+            'root' => $this->whenNotNull($this->root),
+            'cost' => $this->whenNotNull($this->cost, 0),
+            'price' => $this->whenNotNull($this->price, 0),
+            'quantity' => $this->quantity ? $this->quantity : 0,
+            'alert_quantity' => $this->alert_quantity,
+            'units_sold' => $this->units_sold,
             'purchase_date' => $this->when(!is_null($this->purchase_date), (new Carbon($this->purchase_date))->format('Y-m-d'))
-            
+
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,7 +45,7 @@ class SalesController extends Controller
     {
 
         $attributes = $request->validated();
-
+        
         $sale = Sale::create($attributes);
 
         $sale->customer()->update([
@@ -122,5 +123,12 @@ class SalesController extends Controller
             'message' => 'Sale deleted successfully.',
             'status'  => 'success'
         ], Response::HTTP_OK);
+    }
+
+    public function getTheLastSale()
+    {
+        $sale = Sale::orderBy('id', 'desc')->first();
+
+        return new SaleResource($sale);
     }
 }

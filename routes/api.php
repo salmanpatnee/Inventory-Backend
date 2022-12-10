@@ -22,15 +22,15 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('employees/export/', [EmployeesController::class, 'export']);
 
 Route::get('dashboard', DashboardController::class);
-Route::resource('users', UsersController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-
+    
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::resource('users', UsersController::class)->except('store');
     Route::resource('employees', EmployeesController::class);
     Route::resource('suppliers', SuppliersController::class);
     Route::resource('categories', CategoriesController::class);
@@ -40,8 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('salaries', SalariesController::class);
     Route::resource('customers', CustomersController::class);
     Route::resource('carts', CartController::class);
-
+    
     Route::get('stock/{product}', [StockController::class, 'show']);
     Route::put('stock/{product}', [StockController::class, 'update']);
 });
+Route::get('sales/last_sale', [SalesController::class, 'getTheLastSale']);
 Route::resource('sales', SalesController::class);

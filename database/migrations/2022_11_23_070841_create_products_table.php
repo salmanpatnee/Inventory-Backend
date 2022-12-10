@@ -17,13 +17,16 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Supplier::class, 'supplier_id');
-            $table->foreignIdFor(Supplier::class, 'category_id');
+            $table->foreignIdFor(Supplier::class, 'category_id')->nullable()->default(1);
+            $table->string('image', 255)->nullable();
             $table->string('name', 255)->unique();
             $table->string('code', 255)->nullable()->unique();
             $table->string('root', 255)->nullable();
             $table->decimal('cost', 10, 2)->nullable();
             $table->decimal('price', 10, 2)->nullable();
             $table->integer('quantity')->nullable();
+            $table->integer('alert_quantity')->nullable()->default(0);
+            $table->integer('units_sold')->nullable()->default(0);
             $table->timestamp('purchase_date')->nullable();
             $table->timestamps();
         });

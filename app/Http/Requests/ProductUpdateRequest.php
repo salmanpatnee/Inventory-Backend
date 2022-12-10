@@ -31,7 +31,8 @@ class ProductUpdateRequest extends FormRequest
             'root' => 'nullable|string|max:255',
             'cost' => 'nullable|numeric',
             'price' => 'nullable|required_with:cost|gt:cost',
-            'quantity' => 'nullable|numeric',
+            'quantity' => 'nullable|numeric', 
+            'alert_quantity' => 'nullable|numeric',
             'purchase_date' => 'nullable|date'
         ];
     }

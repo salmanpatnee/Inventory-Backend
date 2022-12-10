@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
@@ -28,25 +30,14 @@ class UsersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return new UserResource($user);
     }
 
     /**
@@ -56,9 +47,18 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $attributes = $request->validated();
+
+        $user->update($attributes);
+
+        return (new UserResource($user))
+            ->additional([
+                'message' => 'User updated successfully.',
+                'status' => 'success'
+            ])->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -67,8 +67,13 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response([
+            'message' => 'User deleted successfully.',
+            'status'  => 'success'
+        ], Response::HTTP_OK);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class SaleStoreRequest extends FormRequest
 {
@@ -16,6 +17,14 @@ class SaleStoreRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => 1,
+            'invoice_no' => '1001',
+        ]);
+    }
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +34,9 @@ class SaleStoreRequest extends FormRequest
     {
         return [
             'customer_id' => 'required|integer|exists:customers,id',
+            'user_id' => 'required|integer|exists:users,id',
             'payment_method_id' => 'required|integer|in:1,2',
+            'invoice_no' => 'required|string',
             'total_quantities' => 'required|integer',
             'sub_total' => 'required|numeric',
             'vat' => 'required|numeric',

@@ -16,6 +16,7 @@ class SaleResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'invoice_no' => $this->invoice_no,
             'payment_method' => $this->payment_method_id === 1 ? 'Cash' : 'Bank',
             'total_quantities' => $this->total_quantities,
             'sub_total' => $this->sub_total,

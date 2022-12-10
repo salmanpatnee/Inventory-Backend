@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Employee::factory(10)->create();
         \App\Models\Supplier::factory(10)->create();
-        \App\Models\Category::factory(5)->create();
+        \App\Models\Category::factory()->create([
+            'name' => 'Uncategorized'
+        ]);
         \App\Models\Product::factory(10)->create();
         \App\Models\Expense::factory(5)->create();
         \App\Models\Customer::factory(5)->create();

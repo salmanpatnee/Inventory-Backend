@@ -32,6 +32,7 @@ class ProductStoreRequest extends FormRequest
             'cost' => 'nullable|numeric',
             'price' => 'nullable|required_with:cost|gt:cost',
             'quantity' => 'nullable|numeric',
+            'alert_quantity' => 'nullable|numeric',
             'purchase_date' => 'nullable|date'
         ];
     }

@@ -9,7 +9,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'payment_method_id', 'total_quantities', 'sub_total', 'vat', 'grand_total', 'pay', 'due'];
+    protected $fillable = ['customer_id', 'user_id', 'invoice_no', 'payment_method_id', 'total_quantities', 'sub_total', 'vat', 'grand_total', 'pay', 'due'];
 
     public function scopeSearch($query, $term)
     {
@@ -17,15 +17,24 @@ class Sale extends Model
 
         $query->where(function ($query) use ($term) {
             $query->where('id', 'like', $term)
-            ->orWhereHas('customer', function ($query) use ($term) {
-                $query->where('name', 'like', $term);
-            });
+                ->orWhere('invoice_no', $term)
+                ->orWhereHas('customer', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                })
+                ->orWhereHas('user', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                });
         });
     }
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function sale_details()

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,9 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Customer::class, 'customer_id');
+            $table->foreignIdFor(User::class, 'user_id');
             $table->integer('payment_method_id')->default(1);
+            $table->string('invoice_no', 255);
             $table->integer('total_quantities');
             $table->decimal('sub_total', 10, 2);
             $table->decimal('vat', 10, 2);
