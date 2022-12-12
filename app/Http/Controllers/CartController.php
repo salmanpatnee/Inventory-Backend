@@ -34,14 +34,30 @@ class CartController extends Controller
 
         $product = Product::find($attributes['product_id']);
 
-        $isProductInCart = Cart::where('product_id', $product->id)->first();
 
-        if ($isProductInCart) {
+        if (!$product->quantity) {
+            return response([
+                'message' => 'Item is out of stock',
+                'status'  => 'error'
+            ], Response::HTTP_OK);
+        }
 
-            $isProductInCart->increment('quantity');
-            $sub_total = $isProductInCart->quantity * $isProductInCart->unit_price;
-            $isProductInCart->update(['sub_total' => $sub_total]);
-           
+        $productInCart = Cart::where('product_id', $product->id)->first();
+
+        if ($productInCart) {
+
+            if (($productInCart->quantity + 1) > $product->quantity) {
+
+                return response([
+                    'message' => "Product is out of stock you can max order {$product->quantity}",
+                    'status'  => 'error'
+                ], Response::HTTP_OK);
+            }
+
+            $productInCart->increment('quantity');
+            $sub_total = $productInCart->quantity * $productInCart->unit_price;
+            $productInCart->update(['sub_total' => $sub_total]);
+
             return response([
                 'message' => 'Quantity updated',
                 'status'  => 'success'
@@ -94,7 +110,6 @@ class CartController extends Controller
             'message' => 'Cart updated successfully.',
             'status'  => 'success',
         ], Response::HTTP_OK);
-
     }
 
     /**

@@ -45,11 +45,11 @@ class SalesController extends Controller
     {
 
         $attributes = $request->validated();
-        
+
         $sale = Sale::create($attributes);
 
         $sale->customer()->update([
-            'total_spendings' => $sale->customer->total_spendings + $sale->pay, 
+            'total_spendings' => $sale->customer->total_spendings + $sale->pay,
             'last_purchase_at' => $sale->created_at
         ]);
 
@@ -125,10 +125,13 @@ class SalesController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function getTheLastSale()
+    public function generateInvoiceNo()
     {
         $sale = Sale::orderBy('id', 'desc')->first();
 
-        return new SaleResource($sale);
+        if ($sale) {
+            return $sale->invoice_no + 1;
+        }
+        return '1001';
     }
 }

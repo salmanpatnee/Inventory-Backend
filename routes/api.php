@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('stock/{product}', [StockController::class, 'show']);
     Route::put('stock/{product}', [StockController::class, 'update']);
+
+    Route::get('sales/get_invoice_no', [SalesController::class, 'generateInvoiceNo']);
+    Route::resource('sales', SalesController::class);
 });
-Route::get('sales/last_sale', [SalesController::class, 'getTheLastSale']);
-Route::resource('sales', SalesController::class);
+
