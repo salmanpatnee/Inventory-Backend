@@ -48,6 +48,7 @@ class SalesController extends Controller
 
         $sale = Sale::create($attributes);
 
+        //Refactor: Model Events
         $sale->customer()->update([
             'total_spendings' => $sale->customer->total_spendings + $sale->pay,
             'last_purchase_at' => $sale->created_at
@@ -68,7 +69,7 @@ class SalesController extends Controller
 
                 // Manage stock
                 $product = Product::find($saleDetail->product_id);
-                $product->update(['quantity' => $product->quantity - $saleDetail->quantity]);
+                $product->update(['quantity' => $product->quantity - $saleDetail->quantity, 'units_sold' => $saleDetail->quantity]);
             }
 
             //Delete cart contents.

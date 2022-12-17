@@ -20,13 +20,16 @@ class ProductsController extends Controller
     {
         $paginate = request('paginate', 10);
         $term     = request('search', '');
+        $category     = request('category', '');
         $sortOrder  = request('sortOrder', 'desc');
         $orderBy    = request('orderBy', 'name');
 
         $products = Product::search($term)
             ->with(['supplier', 'category'])
             ->orderBy($orderBy, $sortOrder)
-            ->paginate($paginate);
+            ->when($category, function($query, $category) {
+                return $query->where('category_id', $category);
+            })->paginate($paginate);
 
         return ProductResource::collection($products);
     }

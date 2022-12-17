@@ -19,14 +19,15 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Customer::class, 'customer_id');
             $table->foreignIdFor(User::class, 'user_id');
-            $table->integer('payment_method_id')->default(1);
             $table->string('invoice_no', 255);
             $table->integer('total_quantities');
             $table->decimal('sub_total', 10, 2);
             $table->decimal('vat', 10, 2);
             $table->decimal('grand_total', 10, 2);
+            $table->integer('payment_method_id')->default(1);
             $table->decimal('pay', 10, 2)->nullable()->default(0.00);
             $table->decimal('due', 10, 2)->nullable()->default(0.00);
+            $table->string('transaction_id', 255)->nullable();
             $table->timestamps();
         });
     }

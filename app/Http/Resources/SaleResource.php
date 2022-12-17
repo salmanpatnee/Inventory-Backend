@@ -24,6 +24,7 @@ class SaleResource extends JsonResource
             'grand_total' => $this->grand_total,
             'pay' => $this->pay === null ? '0.00' : $this->pay,
             'due' => $this->due === null ? '0.00' : $this->due,
+            'transaction_id' => $this->transaction_id === null ? '' : $this->transaction_id,
             'date' => $this->created_at,
             'status' => $this->due !== null ? 'due' : 'paid',
             'customer' => new CustomerResource($this->whenLoaded('customer')),

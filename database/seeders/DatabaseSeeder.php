@@ -29,6 +29,11 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Product::factory(10)->create();
         \App\Models\Expense::factory(5)->create();
-        \App\Models\Customer::factory(5)->create();
+        \App\Models\Customer::factory()->create([
+            'name' => 'Walk-In Customer',
+            'email' => '',
+            'phone' => '',
+            'address' => '',
+        ]);
     }
 }
